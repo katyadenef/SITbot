@@ -1,0 +1,102 @@
+<aiml version="1.0.1" encoding="UTF-8">
+
+    <category>
+	    <pattern> HELLO </pattern>
+        <template>
+            Hello, problem solver! Tell me the problem you're facing.
+        </template>
+    </category>
+    <category>
+        <pattern> hi </pattern>
+        <template>
+            <srai> HELLO </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> what's up </pattern>
+        <template>
+            <srai> HELLO </srai>
+        </template>
+    </category>
+
+
+    <category>
+        <pattern>undesired effect is *</pattern>
+        <template>
+            I see... <set name = "undesired"><star/></set>...
+            So what? Whta does it lead to? And why does it happen?
+        </template>
+    </category>
+
+
+
+    <category>
+        <pattern> what now </pattern>
+        <template>
+<!--            You can keep adding problem and environment objects, specify "so what" and why's of the undesired effect.-->
+        </template>
+    </category>
+    <category>
+        <pattern> what's next </pattern>
+        <template>
+            <srai> what now </srai>
+        </template>
+    </category>
+
+    <category>
+        <pattern> environment object is * </pattern>
+        <template>
+            I got it. Environment: <set name = "env_object"><star/></set>
+        </template>
+    </category>
+    <category>
+        <pattern> environment objects are * </pattern>
+        <template>
+            <srai> environment object is <star/></srai>
+        </template>
+    </category>
+
+    <category>
+        <pattern> so what is * </pattern>
+        <template>
+            I got it. So what: <set name = "so_what"><star/></set>
+        </template>
+    </category>
+    <category>
+        <pattern> so * </pattern>
+        <template>
+            <srai> so what is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> it leads to * </pattern>
+        <template>
+            <srai> so what is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> it causes * </pattern>
+        <template>
+            <srai> so what is <star/> </srai>
+        </template>
+    </category>
+
+    <category>
+        <pattern> why is * </pattern>
+        <template>
+            I got it. Whys: <set name = "why"><star/></set>
+        </template>
+    </category>
+    <category>
+        <pattern> because * </pattern>
+        <template>
+            <srai> why is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> it happens because * </pattern>
+        <template>
+            <srai> why is <star/> </srai>
+        </template>
+    </category>
+</aiml>

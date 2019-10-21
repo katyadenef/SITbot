@@ -1,0 +1,49 @@
+<aiml version="1.0.1" encoding="UTF-8">
+    <category>
+        <pattern> so what is * </pattern>
+        <template>
+            I got it - <set name = "so_what"><star/></set>
+            \nSo what?
+            \nThat's all? Type "done".
+        </template>
+    </category>
+    <category>
+        <pattern> so * </pattern>
+        <template>
+            <srai> so what is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> it leads to * </pattern>
+        <template>
+            <srai> so what is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> it causes * </pattern>
+        <template>
+            <srai> so what is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> done </pattern>
+        <template>
+            Are you sure?
+        </template>
+    </category>
+    <category>
+        <pattern> no </pattern>
+        <template>
+            OK, keep going!
+        </template>
+    </category>
+    <category>
+        <pattern> yes </pattern>
+        <template>
+            <think><set name = "so_what_done">1</set></think>
+            Cool :-8 !
+            \nYour undesired effect is <get name = "undesired_effect"/>.
+            \n Why does it happen?
+        </template>
+    </category>
+</aiml>

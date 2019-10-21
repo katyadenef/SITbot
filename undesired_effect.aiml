@@ -1,0 +1,10 @@
+<aiml version="1.0.1" encoding="UTF-8">
+        <category>
+        <pattern>undesired effect is *</pattern>
+        <template>
+            I see... <set name = "undesired_effect"><star/></set>...
+            \nSo what? What does it lead to?
+            <think><set name = "undesired_effect_done">1</set></think>
+        </template>
+    </category>
+</aiml>

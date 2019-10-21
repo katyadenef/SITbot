@@ -1,0 +1,47 @@
+<aiml version="1.0.1" encoding="UTF-8">
+    <category>
+        <pattern> problem object is * </pattern>
+        <template>
+            I got it: <set name = "problem_objects"><star/></set>.
+            \nAnd what about
+            \nIf you are finished with problem objects, just tell me "done".
+        </template>
+    </category>
+    <category>
+        <pattern> problem objects are * </pattern>
+        <template>
+            <srai> problem object is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> add * </pattern>
+        <template>
+            <srai> problem object is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> remove * </pattern>
+        <template>
+            <srai> problem object is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> done </pattern>
+        <template>
+            Are you sure?
+        </template>
+    </category>
+    <category>
+        <pattern> no </pattern>
+        <template>
+            OK, keep going!
+        </template>
+    </category>
+    <category>
+        <pattern> yes </pattern>
+        <template>
+            <think><set name = "problem_objects_done">1</set></think>
+            Cool :-8 ! \nLet's now define environment objects of the problem.
+        </template>
+    </category>
+</aiml>

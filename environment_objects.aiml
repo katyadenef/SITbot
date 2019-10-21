@@ -1,0 +1,46 @@
+<aiml version="1.0.1" encoding="UTF-8">
+    <category>
+        <pattern> environment object is * </pattern>
+        <template>
+            I got it: <set name = "environment_objects"><star/></set>.
+            \nIf you are finished with environment objects, just tell me "done".
+        </template>
+    </category>
+    <category>
+        <pattern> environment objects are * </pattern>
+        <template>
+            <srai> environment object is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> add * </pattern>
+        <template>
+            <srai> environment object is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> remove * </pattern>
+        <template>
+            <srai> environment object is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> done </pattern>
+        <template>
+            Are you sure?
+        </template>
+    </category>
+    <category>
+        <pattern> no </pattern>
+        <template>
+            OK, keep going!
+        </template>
+    </category>
+    <category>
+        <pattern> yes </pattern>
+        <template>
+            <think><set name = "environment_objects_done">1</set></think>
+            Cool :-8 ! \nLet's now define the undesired effect of the problem.
+        </template>
+    </category>
+</aiml>

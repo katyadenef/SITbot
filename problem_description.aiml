@@ -1,0 +1,107 @@
+<aiml version="1.0.1" encoding="UTF-8">
+	<category>
+	    <pattern> HELLO </pattern>
+        <template>
+            Hello, problem solver! welcome to SIT chat.
+            \nYou will insert problem description, problem and environment objects and more.
+            \nIf at any stage you want to fix anything, just type "fix!".
+            \nIf you're lost and don't know what to do - ask "help".
+            \nTell me the problem you're facing.
+        </template>
+    </category>
+    <category>
+        <pattern> hi </pattern>
+        <template>
+            <srai> HELLO </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> what's up </pattern>
+        <template>
+            <srai> HELLO </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> problem is *</pattern>
+        <template>
+            <think><set name = "problem_description_done"> 1</set></think>
+            I see... Let's try and solve it using SIT method.
+            \nThe problem is <set name = "problem_description"><star/></set>.
+            \nTell me what the problem objects are.
+        </template>
+    </category>
+    <category>
+        <pattern> our problem is *</pattern>
+        <template>
+            <srai> problem is <star/></srai>
+        </template>
+    </category>
+    <category>
+        <pattern>my problem is *</pattern>
+        <template>
+            <srai>problem is <star/></srai>
+        </template>
+    </category>
+    <category>
+        <pattern>the problem is *</pattern>
+        <template>
+            <srai>problem is <star/></srai>
+        </template>
+    </category>
+    <category>
+        <pattern>fix</pattern>
+        <template>What do you want to fix? Options are: problem description, problem objects, environment objects,
+        undesired effect, so what, why.
+        <think><set name = "fix">1</set></think>
+        </template>
+    </category>
+    <category>
+        <pattern>help</pattern>
+        <template>What do you want me to explain? Problem description, problem objects, environment objects,
+        undesired effect, so what, why?
+        <think><set name = "help">1</set></think>
+        </template>
+    </category>
+    <category>
+        <pattern>problem description</pattern>
+        <template> <think><set name="problem_description_done">0</set></think>
+            Got ya! You current description is: <get name = "problem_description"/>.
+            \nWhat is the new one?
+        </template>
+    </category>
+    <category>
+        <pattern>problem objects</pattern>
+        <template> <think><set name="problem_objects_done">0</set></think>
+            OK, your current objects are: <get name = "problem_objects"/>.
+            \nType "add/remove object".
+        </template>
+    </category>
+    <category>
+        <pattern>environment objects</pattern>
+        <template> <think><set name="environment_objects_done">0</set></think>
+            OK, your current objects are: <get name = "environment_objects"/>.
+            \nType "add/remove object".
+        </template>
+    </category>
+    <category>
+        <pattern>undesired effect</pattern>
+        <template> <think><set name="undesired_effect_done">0</set></think>
+            Got ya! You current undesired effect is: <get name = "undesired_effect"/>.
+            \nWhat is the new one?
+        </template>
+    </category>
+    <category>
+        <pattern>so what</pattern>
+        <template> <think><set name="so_what_done">0</set></think>
+            Got ya! You current "so what" is: <get name = "so_what"/>.
+            \nWhat is the new one?
+        </template>
+    </category>
+    <category>
+        <pattern>why</pattern>
+        <template> <think><set name="why_done">0</set></think>
+            OK, your current reasons are: <get name = "why"/>.
+            \nType "add/remove reason".
+        </template>>
+    </category>
+</aiml>

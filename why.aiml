@@ -1,0 +1,55 @@
+<aiml version="1.0.1" encoding="UTF-8">
+    <category>
+        <pattern> why is * </pattern>
+        <template>
+            I got it. And why <star/>? \nIf you think there are no more why's, type "done".
+            <think><set name = "why"><star/></set></think>
+        </template>
+    </category>
+    <category>
+        <pattern> because * </pattern>
+        <template>
+            <srai> why is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> add * </pattern>
+        <template>
+            <srai> why is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> remove * </pattern>
+        <template>
+            <srai> why is <star/> </srai>
+        </template>
+    </category>
+    <category>
+        <pattern> it happens because * </pattern>
+        <template>
+            <srai> why is <star/> </srai>
+        </template>
+    </category>
+        <category>
+        <pattern> done </pattern>
+        <template>
+            Are you sure?
+        </template>
+    </category>
+    <category>
+        <pattern> no </pattern>
+        <template>
+            OK, keep going!
+        </template>
+    </category>
+    <category>
+        <pattern> yes </pattern>
+        <template>
+            <think><set name = "why_done">1</set></think>
+            Cool :-8 ! \nLooks like we're done with the first stage!
+            \nLt's now move on to stage 2 - the solution stage.
+            \nFirst of all, ou need to select a method for solution - unification, multiplication,
+            breaking symmetry, division or object removal.
+        </template>
+    </category>
+</aiml>

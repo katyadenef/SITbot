@@ -1,0 +1,17 @@
+<aiml version="1.0.1" encoding="UTF-8">
+    <category>
+        <pattern> problem is *</pattern>
+        <template>
+            <think><set name = "problem_description_done"> 1</set></think>
+            I see... Let's try and solve it using SIT method.
+            \nThe problem is <set name = "problem_description"><star/></set>.
+            \nTell me what the problem objects are.
+        </template>
+    </category>
+    <category>
+        <pattern> our problem is *</pattern>
+        <template>
+            <srai> problem is <star/></srai>
+        </template>
+    </category>
+</aiml>
