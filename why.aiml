@@ -46,7 +46,7 @@
         <pattern> yes </pattern>
         <template>
             <think><set name = "why_done">1</set></think>
-            Cool :-8 ! \nLooks like we're done with the first stage!
+            Cool :sunglasses: ! \nLooks like we're done with the first stage!
             \nLt's now move on to stage 2 - the solution stage.
             \nFirst of all, ou need to select a method for solution - unification, multiplication,
             breaking symmetry, division or object removal.

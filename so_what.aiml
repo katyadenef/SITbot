@@ -41,7 +41,7 @@
         <pattern> yes </pattern>
         <template>
             <think><set name = "so_what_done">1</set></think>
-            Cool :-8 !
+            Cool :sunglasses: !
             \nYour undesired effect is <get name = "undesired_effect"/>.
             \n Why does it happen?
         </template>

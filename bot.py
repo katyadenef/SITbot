@@ -1,17 +1,27 @@
-# from flask import Flask, request
-# from pymessenger.bot import Bot
+import re
 import ConfigParser as cp
 from collections import OrderedDict
 
 import aiml
 import nltk
+import os
+from slackclient import SlackClient
+import time
+
+# instantiate Slack client
+slack_client = SlackClient('xoxb-797083585488-784313694066-Jf7KidV9pSXJPfWYHL35I0kp')
+bot_id = None
+
+# constants
+RTM_READ_DELAY = 1 # 1 second delay between reading from RTM
+EXAMPLE_COMMAND = "do"
+MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
 
 # nltk.download('punkt')
 # nltk.download('averaged_perceptron_tagger')
 
-# os.environ['SCR_ROOT'] = os.path.abspath(os.path.join(__file__))
-# sys.path.append(os.environ['SCR_ROOT'])
-
+# os.environ['SLACK_BOT_TOKEN'] = 'xoxp-797083585488-799291757910-797098294005-b891a02d8e3da1035aa5c48b9dcc47da'
+# os.environ['SLACK_BOT_TOKEN'] = 'xoxb-797083585488-784313694066-F4g3LX8A4lDQ4p9hCw3LWm8f'
 cfg = None
 fix = 0
 app = None
@@ -55,10 +65,10 @@ def calculate_response(input):
         if "And what about" in i:
             if "potential_objects" in stage_1.keys() \
                     and len(stage_1["potential_objects"]) != 0:
-                res.append("Bot: " + str(i) + ", ".join(stage_1["potential_objects"])
+                res.append(str(i) + ", ".join(stage_1["potential_objects"])
                            + "?..")
         else:
-            res.append("Bot: " + str(i))
+            res.append(str(i))
     return res
 
 def get_variable(aiml_name):
@@ -68,46 +78,6 @@ def parse_config(cnf_file):
     global cfg
     cfg = cp.RawConfigParser()
     cfg.read(cnf_file)
-
-
-# app = Flask(__name__)
-# ACCESS_TOKEN = 'EAAGwTQv0Us8BABYVAdDsACx0rDQctPJs88X4AEmE9xqU6vqyI48AcCuVl8sIRG0ZArOZAK2ZB5mHQObmAXYEoZBwAhrff4ZCRES5zBck3PXB0Ee3ZCRuJThAUHKVIUuKmUKmPYQ95tH43Jv6kOA9i5PPwve2ZCc0z4rCF0ypIxYwQZDZD'
-# VERIFY_TOKEN = '6eextR37a81QUwt1vK1Kx_7L94tNN73XiewAyH45QbF'
-# bot = Bot(ACCESS_TOKEN)
-
-
-# receive messages that Facebook sends bot at this endpoint
-# # @app.route("/", methods=['GET', 'POST'])
-# def receive_message():
-#     if request.method == 'GET':
-#         # Facebook implementation of a verify token that confirms all requests that your bot receives came from Facebook
-#         token_sent = request.args.get("hub.verify_token")
-#         return verify_fb_token(token_sent)
-#     else:
-#         # get whatever message a user sent the bot
-#         output = request.get_json()
-#         for event in output['entry']:
-#             messaging = event['messaging']
-#             for message in messaging:
-#                 if message.get('message'):
-#                     # Facebook Messenger ID for user so we know where to send response back to
-#                     recipient_id = message['sender']['id']
-#                     if message['message'].get('text'):
-#                         response_sent_text = get_message(message['message'].get('text'))
-#                         send_message(recipient_id, response_sent_text)
-#                     # if user sends us a GIF, photo,video, or any other non-text item
-#                     if message['message'].get('attachments'):
-#                         response_sent_nontext = get_message()
-#                         send_message(recipient_id, response_sent_nontext)
-#     return "Message Processed"
-
-
-# def verify_fb_token(token_sent):
-#     # take token sent by facebook and verify it matches the verify token you sent
-#     # if they match, allow the request, else return an error
-#     if token_sent == VERIFY_TOKEN:
-#         return request.args.get("hub.challenge")
-#     return 'Invalid verification token'
 
 def evaluate_variables():
     global stage_1, dones, fix, mozg
@@ -192,20 +162,73 @@ def local_run():
         for r in res:
             print r
 
-# # uses PyMessenger to send response to user
-# def send_message(recipient_id, response):
-#     # sends user the text message provided via input response parameter
-#     bot.send_text_message(recipient_id, response)
-#     return "success"
+
+def parse_direct_mention(message_text):
+    """
+        Finds a direct mention (a mention that is at the beginning) in message text
+        and returns the user ID which was mentioned. If there is no direct mention, returns None
+    """
+    matches = re.search(MENTION_REGEX, message_text)
+    # the first group contains the username, the second group contains the remaining message
+    return (matches.group(1), matches.group(2).strip()) if matches else (None, None)
+
+def handle_command(command, channel):
+    """
+        Executes bot command if the command is known
+    """
+    # Default response is help text for the user
+    default_response = ["Not sure what you mean... :cry:", "Try to say say something else."]
+
+    # Finds and executes the given command, filling in response
+    response = get_message(command)
+    # Sends the response back to the channel
+    if not response:
+        slack_client.api_call(
+            "chat.postMessage",
+            channel=channel,
+            text=default_response
+        )
+    else:
+        for r in response:
+            slack_client.api_call(
+                "chat.postMessage",
+                channel=channel,
+                text=r
+            )
+
+def parse_bot_commands(slack_events):
+    """
+        Parses a list of events coming from the Slack RTM API to find bot commands.
+        If a bot command is found, this function returns a tuple of command and channel.
+        If its not found, then this function returns None, None.
+    """
+    for event in slack_events:
+        if event["type"] == "message" and not "subtype" in event:
+            print "in parse bot command event is: " + str(slack_events)
+            user_id, message = parse_direct_mention(event["text"])
+            if user_id == bot_id:
+                return message, event["channel"]
+    return None, None
 
 if __name__ == "__main__":
-    # if len(sys.argv) < 2 or not os.path.isfile(sys.argv[1]):
-    #     print(sys.argv[1])
-    #     print("-E- no configuration file provided")
-    #     sys.exit(1)
-    # app.run()
     global stage_1, dones, current_state, mozg, prev_state
-    # print current_state
     mozg = start(current_state)
-    local_run()
-
+    # local_run()
+    a = slack_client.rtm_connect(token='xoxb-797083585488-784313694066-Jf7KidV9pSXJPfWYHL35I0kp',
+                                 with_team_state=False)
+    print(a)
+    if a:
+        print("SIT Bot connected and running!")
+        # Read bot's user ID by calling Web API method `auth.test`
+        auth = slack_client.api_call("auth.test")
+        print auth
+        bot_id = auth["user_id"]
+        print("Got bot id: " + str(bot_id))
+        while True:
+            command, channel = parse_bot_commands(slack_client.rtm_read())
+            # print("Command {}, channel {}".format(command, channel))
+            if command:
+                handle_command(command, channel)
+            time.sleep(RTM_READ_DELAY)
+    else:
+        print("Connection failed. Exception traceback printed above.")

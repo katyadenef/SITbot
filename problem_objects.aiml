@@ -41,7 +41,7 @@
         <pattern> yes </pattern>
         <template>
             <think><set name = "problem_objects_done">1</set></think>
-            Cool :-8 ! \nLet's now define environment objects of the problem.
+            Cool :sunglasses: ! \nLet's now define environment objects of the problem.
         </template>
     </category>
 </aiml>

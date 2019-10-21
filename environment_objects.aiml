@@ -40,7 +40,7 @@
         <pattern> yes </pattern>
         <template>
             <think><set name = "environment_objects_done">1</set></think>
-            Cool :-8 ! \nLet's now define the undesired effect of the problem.
+            Cool :sunglasses: ! \nLet's now define the undesired effect of the problem.
         </template>
     </category>
 </aiml>
